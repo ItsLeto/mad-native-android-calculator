@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="actionButton">#0080FF</color>
+    <color name="actionButton">#F7F7F7</color>
     <color name="numberButton">#FFFFFF</color>
+    <color name="skyblue">#007DFE</color>
 
 </resources>
