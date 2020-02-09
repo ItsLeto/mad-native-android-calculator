@@ -26,9 +26,20 @@
         <item name="android:layout_weight">1</item>
         <item name="android:background">@color/actionButton</item>
         <item name="android:textSize">35sp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/frutiger_neue_w02_thin</item>
         <item name="android:textColor">@color/skyblue</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">0.2dp</item>
+    </style>
+
+    <style name="MemoryButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/actionButton</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:fontFamily">@font/frutiger_neue_w02_thin</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">0.2dp</item>
     </style>
