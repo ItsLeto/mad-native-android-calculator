@@ -1,8 +1,10 @@
 package herwig_l.calculator
 
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import net.objecthunter.exp4j.ExpressionBuilder
 
@@ -11,7 +13,6 @@ class MainActivity : AppCompatActivity() {
 //    private var numParentheses: Int = 0
 
     private var memory: Double = 0.0
-    private var hasMemory: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,23 +28,25 @@ class MainActivity : AppCompatActivity() {
         btnMemAdd.setOnClickListener {
             val result = calculateResult()
             if (result !== null) {
-                hasMemory = true
+                tvMemoryStatus.visibility = View.VISIBLE
                 memory += result
+                tvMemoryStatus.text = "M   val: " + memory.toString()
             }
         }
         btnMemSubract.setOnClickListener {
             val result = calculateResult()
             if (result !== null) {
-                hasMemory = true
+                tvMemoryStatus.visibility = View.VISIBLE
                 memory -= result
+                tvMemoryStatus.text = "M   val: " + memory.toString()
             }
         }
         btnMemClear.setOnClickListener {
-            hasMemory = false
+            tvMemoryStatus.visibility = View.INVISIBLE
             memory = 0.0
         }
         btnMemLoad.setOnClickListener {
-            if (hasMemory) {
+            if (tvMemoryStatus.visibility == View.VISIBLE) {
                 if (tvEquation.text.toString().isEmpty()) {
                     tvEquation.text = tvEquation.text.toString() + memory.toString()
                 } else {

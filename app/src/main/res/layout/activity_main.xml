@@ -8,12 +8,25 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
+    <TextView
+        android:id="@+id/tvMemoryStatus"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="25sp"
+        android:layout_marginRight="10sp"
+        android:text="M"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvEquation"
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="90sp"
         android:layout_marginLeft="10sp"
-        android:layout_marginTop="10sp"
         android:layout_marginRight="10sp"
         android:fontFamily="@font/frutiger_neue_w02_thin"
         android:gravity="end"
@@ -24,10 +37,20 @@
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="match_parent"
-        android:layout_height="80sp"
+        android:layout_height="45sp"
         android:layout_marginLeft="10sp"
         android:layout_marginRight="10sp"
-        android:layout_marginBottom="10sp"
+        android:fontFamily="@font/frutiger_neue_w02_thin"
+        android:gravity="end"
+        android:maxLines="1"
+        android:textColor="@android:color/black"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="35sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
         android:fontFamily="@font/frutiger_neue_w02_thin"
         android:gravity="end"
         android:maxLines="1"
@@ -50,14 +73,17 @@
                 android:id="@+id/btnMemClear"
                 style="@style/MemoryButton"
                 android:text="mc" />
+
             <TextView
                 android:id="@+id/btnMemAdd"
                 style="@style/MemoryButton"
                 android:text="m+" />
+
             <TextView
                 android:id="@+id/btnMemSubract"
                 style="@style/MemoryButton"
                 android:text="m-" />
+
             <TextView
                 android:id="@+id/btnMemLoad"
                 style="@style/MemoryButton"
