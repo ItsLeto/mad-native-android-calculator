@@ -32,7 +32,7 @@
         android:gravity="end"
         android:maxLines="1"
         android:textColor="@android:color/black"
-        android:textSize="25sp" />
+        android:textSize="60sp"/>
 
     <TextView
         android:id="@+id/tvResult"
@@ -44,7 +44,7 @@
         android:gravity="end"
         android:maxLines="1"
         android:textColor="@android:color/black"
-        android:textSize="25sp" />
+        android:textSize="35sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -116,18 +116,18 @@
             <TextView
                 android:id="@+id/btnDivid"
                 style="@style/ActionButton"
-                android:text="\u00F7" />
+                android:text="@string/divisionSymbol" />
 
 
             <TextView
                 android:id="@+id/btnMultiply"
                 style="@style/ActionButton"
-                android:text="\u00D7" />
+                android:text="@string/multiplySymbol" />
 
             <TextView
                 android:id="@+id/btnBack"
                 style="@style/ActionButton"
-                android:text="\u232b" />
+                android:text="@string/deleteSymbol" />
 
         </LinearLayout>
 
@@ -155,7 +155,7 @@
             <TextView
                 android:id="@+id/btnSubtract"
                 style="@style/ActionButton"
-                android:text="\u2212" />
+                android:text="@string/minusSymbol" />
 
         </LinearLayout>
 
@@ -184,7 +184,7 @@
             <TextView
                 android:id="@+id/btnAdd"
                 style="@style/ActionButton"
-                android:text="+" />
+                android:text="@string/plusSymbol" />
 
         </LinearLayout>
 

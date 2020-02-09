@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Calculator</string>
+    <string name="divisionSymbol">\u00f7</string>
+    <string name="multiplySymbol">\u00d7</string>
+    <string name="deleteSymbol">\u232b</string>
+    <string name="minusSymbol">\u2212</string>
+    <string name="plusSymbol">+</string>
 </resources>

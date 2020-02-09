@@ -13,6 +13,12 @@ class MainActivity : AppCompatActivity() {
 //    private var numParentheses: Int = 0
 
     private var memory: Double = 0.0
+    private var equation: String = ""
+
+    private val DIVISION_SYBMOL = "\u00f7"
+    private val MULTIPLY_SYMBOL = "\u00d7"
+    private val MINUS_SYMBOL = "\u2212"
+    private val PLUS_SYMBOL = "+"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,17 +53,24 @@ class MainActivity : AppCompatActivity() {
         }
         btnMemLoad.setOnClickListener {
             if (tvMemoryStatus.visibility == View.VISIBLE) {
-                if (tvEquation.text.toString().isEmpty()) {
+                if (equation.isEmpty()) {
+                    equation += memory.toString()
                     tvEquation.text = tvEquation.text.toString() + memory.toString()
                 } else {
 
-                    val lastSymbol = tvEquation.text.toString().takeLast(1)
+                    val lastSymbol = equation.takeLast(1)
                     Log.d("MemLoad", lastSymbol)
 
-                    if (lastSymbol !== "+" && lastSymbol !== "-" && lastSymbol !== "*" && lastSymbol !== "/") {
+                    if (lastSymbol !== "+"
+                        && lastSymbol !== "-"
+                        && lastSymbol !== "*"
+                        && lastSymbol !== "/"
+                    ) {
                         if (memory < 0) {
+                            equation += memory.toString()
                             tvEquation.text = tvEquation.text.toString() + memory.toString()
                         } else if (memory >= 0) {
+                            equation += "+$memory"
                             tvEquation.text = tvEquation.text.toString() + "+" + memory.toString()
                         }
                     }
@@ -67,18 +80,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnClear.setOnClickListener {
+            equation = ""
             tvEquation.text = ""
             tvResult.text = ""
         }
 
         btnBack.setOnClickListener {
-            tvEquation.text = tvEquation.text.dropLast(1)
+            equation = equation.dropLast(1)
+            tvEquation.text = tvEquation.text.toString().dropLast(1)
             tvResult.text = calculateResult()?.toString() ?: ""
         }
-        btnAdd.setOnClickListener { addOperatorToEquation("+") }
-        btnSubtract.setOnClickListener { addOperatorToEquation("-") }
-        btnMultiply.setOnClickListener { addOperatorToEquation("*") }
-        btnDivid.setOnClickListener { addOperatorToEquation("/") }
+        btnAdd.setOnClickListener { addOperatorToEquation(PLUS_SYMBOL) }
+        btnSubtract.setOnClickListener { addOperatorToEquation(MINUS_SYMBOL) }
+        btnMultiply.setOnClickListener { addOperatorToEquation(MULTIPLY_SYMBOL) }
+        btnDivid.setOnClickListener { addOperatorToEquation(DIVISION_SYBMOL) }
 //        btnOpenParenthesis.setOnClickListener     { addSymbolToEquation("(") }
 //        btnClosingParenthesis.setOnClickListener  { addSymbolToEquation(")") }
         btnPoint.setOnClickListener { addSymbolToEquation(".") }
@@ -96,6 +111,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addSymbolToEquation(symbol: String, isAction: Boolean = false) {
+        equation += symbol
         tvEquation.text = tvEquation.text.toString() + symbol
         tvResult.text = calculateResult()?.toString() ?: ""
     }
@@ -103,11 +119,10 @@ class MainActivity : AppCompatActivity() {
     private fun calculateResult(): Double? {
         var result: Double? = null
         try {
-            val equation = ExpressionBuilder(tvEquation.text.toString()).build()
+            val equation = ExpressionBuilder(equation.toString()).build()
             result = equation.evaluate()
-//            tvResult.text = result.toString()
         } catch (e: Exception) {
-//            tvResult.text = "ERROR"
+            Log.e("[Calculate]", e.toString())
         }
         return result
     }
@@ -116,52 +131,77 @@ class MainActivity : AppCompatActivity() {
         return operator == "+" || operator == "-" || operator == "/" || operator == "*"
     }
 
+    private fun getAsciiOperator(operator: String): String? {
+        return when (operator) {
+            PLUS_SYMBOL -> "+"
+            MINUS_SYMBOL -> "-"
+            MULTIPLY_SYMBOL -> "*"
+            DIVISION_SYBMOL -> "/"
+
+            else -> null
+        }
+    }
+
     private fun addOperatorToEquation(operator: String) {
         Log.d("[addOperatorToEquation]", operator)
-        val equation = tvEquation.text.toString()
+        Log.d("[Equation]", equation)
+//        val equation = equation.toString()
 
         if (equation.isEmpty()) {
             // only symbol allowed to stand at the beginning of the equation is a '-'
-            if (operator == "-") {
-                tvEquation.text = equation + operator
+            if (operator == MINUS_SYMBOL) {
+                equation += getAsciiOperator(operator)
+                tvEquation.text = tvEquation.text.toString() + operator
             }
             return
         }
 
         val lastChar = equation.takeLast(1)
         val secondLastChar = equation.takeLast(2).take(1)
+        Log.d("Last", lastChar)
+        Log.d("SecondLast", secondLastChar)
+
 
         if (isArithmetic(lastChar)) {
-            if (operator == "-") {
+            if (operator == MINUS_SYMBOL) {
                 if (lastChar == "+") {
-                    tvEquation.text = equation.dropLast(1) + operator
+                    equation = equation.dropLast(1) + getAsciiOperator(operator)
+                    tvEquation.text = tvEquation.text.toString().dropLast(1) + operator
                 } else if (lastChar == "*" || lastChar == "/") {
-                    tvEquation.text = equation + operator
+                    tvEquation.text = tvEquation.text.toString() + operator
+                    equation += getAsciiOperator(operator)
                 } else {
                     return // chaining '-' should not be possible
                 }
-            } else if (operator == "+") {
+            } else if (operator == PLUS_SYMBOL) {
                 if (isArithmetic(secondLastChar)) {
-                    tvEquation.text = equation.dropLast(2) + operator
+                    tvEquation.text = tvEquation.text.toString().dropLast(2) + operator
+                    equation = equation.dropLast(2) + getAsciiOperator(operator)
                 } else {
-                    tvEquation.text = equation.dropLast(1) + operator
+                    tvEquation.text = tvEquation.text.toString().dropLast(1) + operator
+                    equation = equation.dropLast(1) + getAsciiOperator(operator)
                 }
-            } else if (operator == "*") {
+            } else if (operator == MULTIPLY_SYMBOL) {
                 if (isArithmetic(secondLastChar)) {
-                    tvEquation.text = equation.dropLast(2) + operator
+                    tvEquation.text = tvEquation.text.toString().dropLast(2) + operator
+                    equation = equation.dropLast(2) + getAsciiOperator(operator)
                 } else {
-                    tvEquation.text = equation.dropLast(1) + operator
+                    tvEquation.text = tvEquation.text.toString().dropLast(1) + operator
+                    equation = equation.dropLast(1) + getAsciiOperator(operator)
                 }
-            } else if (operator == "/") {
+            } else if (operator == DIVISION_SYBMOL) {
                 if (isArithmetic(secondLastChar)) {
-                    tvEquation.text = equation.dropLast(2) + operator
+                    tvEquation.text = tvEquation.text.toString().dropLast(2) + operator
+                    equation = equation.dropLast(2) + getAsciiOperator(operator)
                 } else {
-                    tvEquation.text = equation.dropLast(1) + operator
+                    tvEquation.text = tvEquation.text.toString().dropLast(1) + operator
+                    equation = equation.dropLast(1) + getAsciiOperator(operator)
                 }
             }
         } else {
             Log.d("[Noo]", secondLastChar)
-            tvEquation.text = equation + operator
+            equation += getAsciiOperator(operator)
+            tvEquation.text = tvEquation.text.toString() + operator
         }
     }
 }
