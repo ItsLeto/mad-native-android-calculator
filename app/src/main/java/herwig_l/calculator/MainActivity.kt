@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     private var memory: Double = 0.0
     private var equation: String = ""
 
+    private var equalPressed = false
+
     private val DIVISION_SYBMOL = "\u00f7"
     private val MULTIPLY_SYMBOL = "\u00d7"
     private val MINUS_SYMBOL = "\u2212"
@@ -27,12 +29,15 @@ class MainActivity : AppCompatActivity() {
         btnEquals.setOnClickListener {
             val result = calculateResult()
             if (result !== null) {
+                equalPressed = true
                 tvEquation.text = result.toString()
+                equation = result.toString()
                 tvResult.text = ""
             }
         }
         btnMemAdd.setOnClickListener {
             val result = calculateResult()
+            equalPressed = true
             if (result !== null) {
                 tvMemoryStatus.visibility = View.VISIBLE
                 memory += result
@@ -83,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             equation = ""
             tvEquation.text = ""
             tvResult.text = ""
+            equalPressed = false
         }
 
         btnBack.setOnClickListener {
@@ -110,7 +116,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun addSymbolToEquation(symbol: String, isAction: Boolean = false) {
+    private fun addSymbolToEquation(symbol: String) {
+        if(equalPressed) {
+            equation = ""
+            tvEquation.text = ""
+            equalPressed = false
+        }
         equation += symbol
         tvEquation.text = tvEquation.text.toString() + symbol
         tvResult.text = calculateResult()?.toString() ?: ""
@@ -143,6 +154,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addOperatorToEquation(operator: String) {
+        equalPressed = false
+
         Log.d("[addOperatorToEquation]", operator)
         Log.d("[Equation]", equation)
 //        val equation = equation.toString()
